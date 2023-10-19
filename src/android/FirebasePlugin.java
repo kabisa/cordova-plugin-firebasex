@@ -1917,8 +1917,8 @@ public class FirebasePlugin extends CordovaPlugin {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 try {
-                    if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
-                        ActivityCompat.requestPermissions(this, new String[]{POST_NOTIFICATIONS}, 1);
+                    if (ContextCompat.checkSelfPermission(cordovaActivity, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+                        ActivityCompat.requestPermissions(cordovaActivity, new String[]{POST_NOTIFICATIONS}, 1);
                     }
                     createChannel(options);
                     callbackContext.success();
