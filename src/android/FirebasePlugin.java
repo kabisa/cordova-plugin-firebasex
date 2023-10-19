@@ -166,7 +166,13 @@ public class FirebasePlugin extends CordovaPlugin {
             public void run() {
                 try {
                     Log.d(TAG, "Starting Firebase plugin");
-
+                  if (ContextCompat.checkSelfPermission(cordovaActivity, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+                    Log.d(TAG, "PERMISSION DENIED");
+                    ActivityCompat.requestPermissions(cordovaActivity, new String[]{POST_NOTIFICATIONS}, 1);
+                  }
+                  else{
+                    Log.d(TAG, "Permission was granted");
+                  }
                     if(getMetaDataFromManifest(CRASHLYTICS_COLLECTION_ENABLED)){
                         setPreference(CRASHLYTICS_COLLECTION_ENABLED, true);
                     }
@@ -1917,9 +1923,6 @@ public class FirebasePlugin extends CordovaPlugin {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 try {
-                    if (ContextCompat.checkSelfPermission(cordovaActivity, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
-                        ActivityCompat.requestPermissions(cordovaActivity, new String[]{POST_NOTIFICATIONS}, 1);
-                    }
                     createChannel(options);
                     callbackContext.success();
                 } catch (Exception e) {
