@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 
 import android.util.Base64;
 import android.util.Log;
@@ -110,6 +112,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static android.content.Context.MODE_PRIVATE;
 
 public class FirebasePlugin extends CordovaPlugin {
@@ -163,7 +166,9 @@ public class FirebasePlugin extends CordovaPlugin {
             public void run() {
                 try {
                     Log.d(TAG, "Starting Firebase plugin");
-
+                  if (ContextCompat.checkSelfPermission(cordovaActivity, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(cordovaActivity, new String[]{POST_NOTIFICATIONS}, 1);
+                  }
                     if(getMetaDataFromManifest(CRASHLYTICS_COLLECTION_ENABLED)){
                         setPreference(CRASHLYTICS_COLLECTION_ENABLED, true);
                     }
